@@ -24,6 +24,7 @@ services:
     image: "${PHP_VERSION}"
     volumes:
       - ./etc/php-fpm/php-fpm.ini:/usr/local/etc/php-fpm.ini
+      - ./etc/php-fpm/php.ini-production:/usr/local/etc/php/php.ini
       - ./etc/php-fpm/crontabs:/etc/crontabs
       - ./wwwroot:/var/www
     environment:
@@ -35,6 +36,8 @@ services:
   mysql:
     image: "${MYSQL_VERSION}"
     command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - 3306:3306
     volumes:
       - ./etc/mysql/my.cnf:/etc/my.cnf
       - ./etc/mysql/my.cnf.d:/etc/my.cnf.d
@@ -46,22 +49,22 @@ services:
     restart: on-failure
 
 
-  phpmyadmin:
-    image: "${PMA_VERSION}"
-    ports:
-      - 8080:80
-    depends_on:
-      - mysql
-    environment:
-      PMA_HOST: mysql
-      TZ: ${TZ}
-    restart: on-failure
+#  phpmyadmin:
+#    image: "${PMA_VERSION}"
+#    ports:
+#      - 8080:80
+#    depends_on:
+#      - mysql
+#    environment:
+#      PMA_HOST: mysql
+#      TZ: ${TZ}
+#    restart: on-failure
 
 
-  redis:
-    image: "${REDIS_VERSION}"
-    volumes:
-      - ./data/redis/data:/data:rw
-    environment:
-      TZ: ${TZ}
-    restart: on-failure
+#  redis:
+#    image: "${REDIS_VERSION}"
+#    volumes:
+#      - ./data/redis/data:/data:rw
+#    environment:
+#      TZ: ${TZ}
+#    restart: on-failure
